@@ -34,6 +34,9 @@ set :ssh_options, {
   forward_agent: true
 }
 
+# Set custom ssh port
+set :port, 28900
+
 set :keep_releases, 5
 
 ############################################
