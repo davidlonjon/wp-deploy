@@ -32,10 +32,8 @@ set :use_sudo, false
 
 set :ssh_options, {
   forward_agent: true
+  #port: your custom port number; Do not forget to add a comma to previous line if using
 }
-
-# Set custom ssh port
-set :port, 28900
 
 set :keep_releases, 5
 
