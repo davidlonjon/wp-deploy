@@ -9,7 +9,7 @@ set :deploy_to, "/deploy/to/path"
 
 #set :tmp_dir, '/home/wp-dlstage/tmp' # Set a different tmp dir if staging is on same server as prod
 # It is recommended not to have staging on production but when starting to test things it
-# is usefull
+# is useful
 
 ############################################
 # Setup Git
