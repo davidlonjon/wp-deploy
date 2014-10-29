@@ -15,3 +15,10 @@ read NEW_ORIGIN
 git remote set-url origin $NEW_ORIGIN
 
 echo "The origin has been set to $NEW_ORIGIN"
+
+echo "Setting Wordpress as a submodule"
+rm -rf wordpress
+git submodule add -b 4.0-branch https://github.com/WordPress/WordPress.git wordpress
+
+# git add -A
+# git commit -m "Inital commit"
