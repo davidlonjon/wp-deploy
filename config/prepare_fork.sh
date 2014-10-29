@@ -24,8 +24,11 @@ git commit -m "Inital commit"
 echo "Please specify the new origin for this repo?"
 read NEW_ORIGIN
 
+echo "Set origin to $NEW_ORIGIN"
 git remote add origin $NEW_ORIGIN
-echo "The origin has been set to $NEW_ORIGIN"
 
-echo "Adding upstream git@github.com:davidlonjon/wp-deploy.git"
+echo "Push to origin"
+git push origin master
+
+echo "Add upstream git@github.com:davidlonjon/wp-deploy.git"
 git remote add upstream git@github.com:davidlonjon/wp-deploy.git
