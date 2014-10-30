@@ -25,6 +25,11 @@ content/upgrade/*
 content/cache/*
 content/backup/*
 wp-config.php
+content/plugins/*
+!content/plugins/index.php
+
+content/themes/*
+!content/themes/index.php
 
 # Misc #
 ###################
@@ -32,3 +37,7 @@ wp-config.php
 _assets
 node_modules
 ai-cache/*
+
+# Composer #
+###################
+vendor/
