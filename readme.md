@@ -58,7 +58,6 @@ What does this do:
 - Install Ruby dependencies
 - Install Composer dependencies
 - Make the initial git commit
-- Remove git repo origin
 - Ask for a new origin. Just enter the new repo url (i.e. git@github.com:davidlonjon/new_repo_name.git).
 - Set the new origin
 - Push the new origin to remote
