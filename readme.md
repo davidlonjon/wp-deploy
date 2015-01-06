@@ -58,9 +58,10 @@ What does this do:
 - Install Ruby dependencies
 - Install Composer dependencies
 - Make the initial git commit
+- Create and checkout a develop branch
 - Ask for a new origin. Just enter the new repo url (i.e. git@github.com:davidlonjon/new_repo_name.git).
 - Set the new origin
-- Push the new origin to remote
+- Push master and develop branches to remote and set them in tracking mode
 
 ___________
 
