@@ -5,16 +5,15 @@
     define('DB_HOST', '<%= database['host'] %>');
     define('DB_CHARSET', 'utf8');
     define('DB_COLLATE', '');
-	define('WPLANG', '');
+    define('WPLANG', '');
 
-	$table_prefix  = 'wp_';
+    $table_prefix  = 'wp_<%= database['wp_db_table_prefix'] %>_';
 
-	<%= secret_keys %>
+    <%= secret_keys %>
 
-	define('WP_HOME','<%= wp_siteurl %>');
-	define('WP_SITEURL','<%= wp_siteurl %>/wordpress');
-
-	define('WP_CONTENT_URL', '<%= wp_siteurl %>/content');
+    define('WP_HOME','<%= wp_siteurl %>');
+    define('WP_SITEURL','<%= wp_siteurl %>/wordpress');
+    define('WP_CONTENT_URL', '<%= wp_siteurl %>/content');
 
   /*
   Depending on your server configuration, you may find WordPress fails to find your content (themes and plugins).
