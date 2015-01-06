@@ -5,7 +5,7 @@ A framework for deploying WordPress projects with Capistrano:
 - Automates WordPress deployments via git/github on any number of environments
 - Automates database migrations between environments
 - Removes all references to development URLs in production environments (and vice versa)
-- Sychronises your WordPress `uploads/` directories between environments
+- Synchronizes your WordPress `uploads/` directories between environments
 - Automatically prevents non-production environments from being crawled by search engines
 
 Note that wp-deploy is pretty strict about how you work with WordPress and git, and it may be different to what you're used to. Be sure to read [Notes on WordPress development](https://github.com/Mixd/wp-deploy/wiki/Notes-on-WordPress-development) before starting.
@@ -45,52 +45,30 @@ git clone --recursive git@github.com:davidlonjon/wp-deploy.git new-project
 
 That will clone the repository into a folder name of your choosing and it'll also download any submodules included within the repository. In this case, we have included WordPress.
 
-Next there will be 2 ways to initliase it. Either initialise it a fork (preferred) of the original repo or as a new repo.
-
-#### Initialize as a fork
-The advantage of this way is you can still easily pull changes from the core repo when impprovements are made. So once you've cloned the repo just run:
-
-```sh
-$ bash config/prepare_fork.sh
-```
-
-You will be ask to enter the new origin of the repo. Just enter the new repo url.
-
-That's it. You can now start working
-This script will also checkout the Wordpress submodule but also will install Ruby dependencies as well as composers dependencies. 
-
 #### Initialize as a new repo
-If you have done the step before, ignore this part.
-
-We need to reinialise it as its own repository rather than having it connected to the current origin. We've create a simple bash script that does most of the leg work for you, so once you've cloned the repo just run:
 
 ```sh
 $ bash config/prepare.sh
 ```
-Then all you need to do is add your own remote origin repository:
 
-```sh
-$ git remote add origin <repo_url>
-```
-
-Install the Ruby dependencies for the framework via Bundler:
-
-```sh
-$ bundle install
-```
-
-And finally, install the composer dependencies (Wordpress plugins and themes)
-
-```sh
-$ composer install
-```
+What does this do:
+- Reset git
+- Reset Wordpress as a submodule in wordpress directory
+- Checkout latest wordpress version (latest tag)
+- Install Ruby dependencies
+- Install Composer dependencies
+- Make the initial git commit
+- Remove git repo origin
+- Ask for a new origin. Just enter the new repo url (i.e. git@github.com:davidlonjon/new_repo_name.git).
+- Set the new origin
+- Push the new origin to remote
 
 ___________
 
 #**Important**
 Wordpress plugins and themes are managed via composer. If you do not want this, just remove the gitignore rules regarding the content and themes and add the files to your repo.
 
-___________ 
+___________
 
 You're now ready to set up your configuration files.
 
@@ -100,8 +78,8 @@ You're now ready to set up your configuration files.
 First off, you need to set your global WP settings under the "WordPress" heading in `config/deploy.rb`:
 
 ```ruby
-set :wp_user, "aaronthomas" # The admin username
-set :wp_email, "aaron@example.com" # The admin email address
+set :wp_user, "davidlonjon" # The admin username
+set :wp_email, "david@example.com" # The admin email address
 set :wp_sitename, "WP Deploy" # The site title
 set :wp_localurl, "http://localhost" # Your local environment URL
 ```
