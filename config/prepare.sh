@@ -55,7 +55,7 @@ else
   git push -u origin master
 
   e_arrow "Push to develop branch to remote"
-  git push origin develop
+  git push -u origin develop
 fi
 
 e_success "All setup completed"
