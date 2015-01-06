@@ -32,3 +32,9 @@ git push origin master
 
 echo "Add upstream git@github.com:davidlonjon/wp-deploy.git"
 git remote add upstream git@github.com:davidlonjon/wp-deploy.git
+
+echo "install Ruby dependencies"
+bundle install
+
+echo "Install php packages via composer"
+composer install
