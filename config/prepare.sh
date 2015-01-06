@@ -42,20 +42,17 @@ git commit -m "Initial commit"
 e_arrow "Create a develop branch..."
 git checkout -b develop
 
-e_arrow "Removing git repo origin..."
-git remote rm origin
-
 e_arrow "Please specify the new origin for this repo?"
 read NEW_ORIGIN
 
 if [ -z "$NEW_ORIGIN" ]; then
-  e_error "The new origin is missing. You will have to had the new origin yourself"
+  e_error "The new origin is missing. You will have to add the new origin yourself"
 else
   e_arrow "Set origin to $NEW_ORIGIN"
   git remote add origin $NEW_ORIGIN
 
   e_arrow "Push to master branch to remote"
-  git push origin master
+  git push -u origin master
 
   e_arrow "Push to develop branch to remote"
   git push origin develop
