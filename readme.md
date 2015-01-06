@@ -40,12 +40,29 @@ Firstly, you're going to need to clone the repository. There are a number of way
 
 ```sh
 cd my/desired/directory
-git clone --recursive https://github.com/Mixd/wp-deploy.git new-project
+git clone --recursive git@github.com:davidlonjon/wp-deploy.git new-project
 ```
 
 That will clone the repository into a folder name of your choosing and it'll also download any submodules included within the repository. In this case, we have included WordPress.
 
-Next, we need to reinialise it as its own repository rather than having it connected to the current origin. We've create a simple bash script that does most of the leg work for you, so once you've cloned the repo just run:
+Next there will be 2 ways to initliase it. Either initialise it a fork (preferred) of the original repo or as a new repo.
+
+#### Initialize as a fork
+The advantage of this way is you can still easily pull changes from the core repo when impprovements are made. So once you've cloned the repo just run:
+
+```sh
+$ bash config/prepare_fork.sh
+```
+
+You will be ask to enter the new origin of the repo. Just enter the new repo url.
+
+That's it. You can now start working
+This script will also checkout the Wordpress submodule but also will install Ruby dependencies as well as composers dependencies. 
+
+#### Initialize as a new repo
+If you have done the step before, ignore this part.
+
+We need to reinialise it as its own repository rather than having it connected to the current origin. We've create a simple bash script that does most of the leg work for you, so once you've cloned the repo just run:
 
 ```sh
 $ bash config/prepare.sh
@@ -56,13 +73,27 @@ Then all you need to do is add your own remote origin repository:
 $ git remote add origin <repo_url>
 ```
 
-And finally, install the Ruby dependencies for the framework via Bundler:
+Install the Ruby dependencies for the framework via Bundler:
 
 ```sh
 $ bundle install
 ```
 
+And finally, install the composer dependencies (Wordpress plugins and themes)
+
+```sh
+$ composer install
+```
+
+___________
+
+#**Important**
+Wordpress plugins and themes are managed via composer. If you do not want this, just remove the gitignore rules regarding the content and themes and add the files to your repo.
+
+___________ 
+
 You're now ready to set up your configuration files.
+
 
 ### Configuration
 
@@ -92,7 +123,7 @@ set :branch, "master"
 ```
 This is where you define your SSH access to the remote server, and the full path which you plan to deploy to. the `stage_url` is used when generating your `wp-config.php` file during installation.
 
-`server` can be an IP address or domain; prefixing with `http://` is not needed either way. 
+`server` can be an IP address or domain; prefixing with `http://` is not needed either way.
 
 You also need to rename `database.example.yml` to `database.yml` and fill it with the database details for each environment, including your local one. This file should stay ignored in git.
 
