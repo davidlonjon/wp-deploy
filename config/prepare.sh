@@ -39,6 +39,9 @@ e_arrow "Making initial commit..."
 git add -A
 git commit -m "Initial commit"
 
+e_arrow "Create a develop branch..."
+git checkout -b develop
+
 e_arrow "Removing git repo origin..."
 git remote rm origin
 
@@ -51,8 +54,11 @@ else
   e_arrow "Set origin to $NEW_ORIGIN"
   git remote add origin $NEW_ORIGIN
 
-  e_arrow "Push to origin"
+  e_arrow "Push to master branch to remote"
   git push origin master
+
+  e_arrow "Push to develop branch to remote"
+  git push origin develop
 fi
 
 e_success "All setup completed"
