@@ -40,7 +40,7 @@ Firstly, you're going to need to clone the repository. There are a number of way
 
 ```sh
 cd my/desired/directory
-git clone --recursive git@github.com:davidlonjon/wp-deploy.git new-project
+git clone git@github.com:davidlonjon/wp-deploy.git new-project
 ```
 
 That will clone the repository into a folder name of your choosing and it'll also download any submodules included within the repository. In this case, we have included WordPress.
