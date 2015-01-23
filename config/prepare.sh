@@ -39,6 +39,9 @@ e_arrow "Making initial commit..."
 git add -A
 git commit -m "Initial commit"
 
+e_arrow "Create a staging branch..."
+git checkout -b staging
+
 e_arrow "Create a develop branch..."
 git checkout -b develop
 
@@ -56,6 +59,9 @@ else
 
   e_arrow "Push to develop branch to remote"
   git push -u origin develop
+
+  e_arrow "Push to staging branch to remote"
+  git push -u origin staging
 fi
 
 e_success "All setup completed"
