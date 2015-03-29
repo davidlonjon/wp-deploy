@@ -41,8 +41,8 @@ set :keep_releases, 5
 # Linked files and directories (symlinks)
 ############################################
 
-set :linked_files, %w{wp-config.php .htaccess}
-set :linked_dirs, %w{content/uploads}
+set :linked_files, %w{wp-config.php .htaccess content/plugins/w3tc-wp-loader.php nginx.conf content/advanced-cache.php}
+set :linked_dirs, %w{content/uploads content/cache content/w3tc-config}
 
 namespace :deploy do
 
@@ -51,6 +51,9 @@ namespace :deploy do
     on roles(:app) do
       execute :touch, "#{shared_path}/wp-config.php"
       execute :touch, "#{shared_path}/.htaccess"
+      execute :touch, "#{shared_path}/content/plugins/w3tc-wp-loader.php"
+      execute :touch, "#{shared_path}/nginx.conf"
+      execute :touch, "#{shared_path}/content/advanced-cache.php"
     end
   end
 
