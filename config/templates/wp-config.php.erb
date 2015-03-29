@@ -7,7 +7,7 @@
     define('DB_COLLATE', '');
     define('WPLANG', '');
 
-    $table_prefix  = 'wp_<%= database['wp_db_table_prefix'] %>_';
+    $table_prefix  = 'wp_';
 
     <%= secret_keys %>
 
@@ -18,16 +18,17 @@
     // Wordpress Security hardening
     define('DISALLOW_FILE_EDIT', true);
 
-  /*
-  Depending on your server configuration, you may find WordPress fails to find your content (themes and plugins).
-  This is due to how your server returns `$_SERVER['DOCUMENT_ROOT']`. If this issue affects you, try swapping
-  for the `dirname(__FILE__)` method below.
-  */
+    /*
+    Depending on your server configuration, you may find WordPress fails to find your content (themes and plugins).
+    This is due to how your server returns `$_SERVER['DOCUMENT_ROOT']`. If this issue affects you, try swapping
+    for the `dirname(__FILE__)` method below.
+    */
 
-  // define('WP_CONTENT_DIR', realpath(dirname(__FILE__) . '/content'));
-  define('WP_CONTENT_DIR', realpath($_SERVER['DOCUMENT_ROOT'] . '/content'));
+    // define('WP_CONTENT_DIR', realpath(dirname(__FILE__) . '/content'));
+    define('WP_CONTENT_DIR', realpath($_SERVER['DOCUMENT_ROOT'] . '/content'));
 
-	if ( !defined('ABSPATH') )
-	        define('ABSPATH', dirname(__FILE__) . '/');
+    if ( !defined('ABSPATH') ) {
+    	define('ABSPATH', dirname(__FILE__) . '/');
+    }
 
-	require_once(ABSPATH . 'wp-settings.php');
+    require_once(ABSPATH . 'wp-settings.php');

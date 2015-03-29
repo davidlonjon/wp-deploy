@@ -35,6 +35,9 @@ else
   e_error "You do not seem to have Composer command install. Please install composer and run 'composer install' command from the root directory"
 fi
 
+e_arrow "Removing remote origin..."
+git remote rm origin
+
 e_arrow "Making initial commit..."
 git add -A
 git commit -m "Initial commit"

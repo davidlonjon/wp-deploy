@@ -16,8 +16,9 @@ namespace :wp do
         # Get details for WordPress config file
         secret_keys = capture("curl -s -k https://api.wordpress.org/secret-key/1.1/salt")
         wp_siteurl = fetch(:stage_url)
-        database = YAML::load_file('config/database.yml')[fetch(:stage).to_s]
-        wp_db_table_prefix = (0...8).map { (65 + rand(26)).chr }.join
+
+        # Load database configuration
+        database = load_database_configuration(fetch(:stage).to_s)
 
         # Create config file in remote environment
         db_config = ERB.new(File.read('config/templates/wp-config.php.erb')).result(binding)
@@ -62,12 +63,17 @@ namespace :wp do
             puts <<-MSG
             \e[32m
             =========================================================================
-              WordPress has successfully been installed. Here are your login details:
+              Success - WordPress has successfully been installed.
 
+              Here are your login details:
               Username:       #{user}
               Password:       #{password}
               Email address:  #{email}
               Log in at:      #{wp_siteurl}/wordpress/wp-admin
+
+              Once you've flushed your permalinks for the first time, you'll be able
+              to login at: #{wp_siteurl}/wp-admin. This can be done by going to
+              Settings->Permalinks in the WordPress Admin.
             =========================================================================
             \e[0m
             MSG
@@ -97,8 +103,10 @@ namespace :wp do
         user = fetch(:wp_user)
         wp_siteurl = fetch(:wp_localurl)
 
+        # Load database configuration
+        database = load_database_configuration('local')
+
         # Create wp-config.php
-        database = YAML::load_file('config/database.yml')['local']
         secret_keys = capture("curl -s -k https://api.wordpress.org/secret-key/1.1/salt")
         db_config = ERB.new(File.read('config/templates/wp-config.php.erb')).result(binding)
         File.open("wp-config.php", 'w') {|f| f.write(db_config) }
@@ -109,11 +117,17 @@ namespace :wp do
         puts <<-MSG
         \e[32m
         =========================================================================
-          WordPress has successfully been installed. Here are your login details:
+          Success - WordPress has successfully been installed.
 
+          Here are your login details:
           Username:       #{user}
           Password:       #{password}
           Email address:  #{email}
+          Log in at:      #{wp_siteurl}/wordpress/wp-admin
+
+          Once you've flushed your permalinks for the first time, you'll be able
+          to login at: #{wp_siteurl}/wp-admin. This can be done by going to
+          Settings->Permalinks in the WordPress Admin.
         =========================================================================
         \e[0m
         MSG
@@ -125,6 +139,11 @@ namespace :wp do
     task :both do
       set :setup_all, true
 
+      # Setup both only works with a database.yml file
+      if !File.exists?('config/database.yml') || (ENV['db_host'] || ENV['db_name'] || ENV['db_user'] || ENV['db_password'])
+        raise "Setup both only works with a database.yml file."
+      end
+
       # Generate a random password
       o = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten
       password = (0...18).map { o[rand(o.length)] }.join
@@ -134,6 +153,7 @@ namespace :wp do
       invoke "wp:setup:remote"
       invoke "wp:setup:local"
     end
+
   end
 
   namespace :core do
@@ -146,9 +166,61 @@ namespace :wp do
       git checkout $latestTag
       ')
       invoke 'cache:repo:purge'
-      puts "WordPress submodule is now at the latest version. You should now commit your changes."
+
+      puts "
+      \e[32m
+      =========================================================================
+        Success - WordPress submodule is now at the latest version.
+
+        You should now commit your changes. You can do this by running the
+        following command: git commit -m \"Updated WordPress to version X.X\"
+      =========================================================================
+      \e[0m
+      "
 
     end
   end
 
+end
+
+# Loads and returns the database configuration as a hash.
+#
+# If `db_host`, `db_name`, `db_user` and `db_password` are passed on the command line,
+# those values are used for the database configuration. Otherwise, the configuration
+# is loaded from a `config/database.yml` file.
+#
+# If neither of those are present, an exception is raised.
+def load_database_configuration(environment)
+  if ENV['db_host'] && ENV['db_name'] && ENV['db_user'] && ENV['db_password']
+    database = {
+      'host' => ENV['db_host'],
+      'database' => ENV['db_name'],
+      'username' => ENV['db_user'],
+      'password' => ENV['db_password']
+    }
+  elsif File.exists?('config/database.yml')
+    database = YAML::load_file('config/database.yml')[environment]
+  else
+    puts <<-MSG
+    \e[31m
+      =========================================================================
+        Error - Incomplete database details specified and no
+        config/database.yml file found.
+
+        Take one of the following steps:
+        1. Copy & Rename the config/database.example.yml file to database.yml
+        and then enter each environments details.
+        2. Enter the following parameters when you try to setup your
+        environment: db_host, db_name, db_user, db_password. This cannot be
+        done when you're running wp:setup:both.
+
+        See the README for more info - https://github.com/Mixd/wp-deploy
+      =========================================================================
+    \e[0m
+    MSG
+
+    raise "Incorrect database configuration"
+  end
+
+  return database
 end
